@@ -21,12 +21,10 @@ public class Store : ISubject
         _observers[product].Add(observer);
     }
 
-    public void Unsubscribe(IObserver observer)
+    public void Unsubscribe(IObserver observer, Product product)
     {
-        foreach (var productList in _observers.Values)
-        {
-            productList.Remove(observer);
-        }
+        if (!_observers.ContainsKey(product)) return;
+        _observers[product].Remove(observer);
     }
     
     public void Notify(Product product)

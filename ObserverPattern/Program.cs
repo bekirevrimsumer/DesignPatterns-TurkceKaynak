@@ -14,5 +14,8 @@ store.Subscribe(customer1, product1);
 store.Subscribe(customer2, product2);
 store.Subscribe(customer3, product1);
 
+store.Subscribe(customer1, product2);
+store.Unsubscribe(customer1, product1);
+
 store.AddProduct(product1);
 store.AddProduct(product2);
