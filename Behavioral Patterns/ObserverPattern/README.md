@@ -33,7 +33,92 @@ Bu örnek, Observer Design Pattern'in nasıl çalıştığını ve nasıl kullan
 
 Müşteriler, belirli ürünlerin stokları güncellendiğinde bilgilendirilmek istiyorlar. Ancak mağaza, tüm müşterilere gereksiz yere bildirim göndermek istemiyor. Bu durumda Observer Design Pattern devreye girer. İlgili nesne (mağaza) müşteri nesnelerini izler ve ürün stoku güncellendiğinde ilgili müşterilere bildirim gönderir.
 
-## Kod Örneği
+## Kötü Tasarım
+
+Öncelikle bu senaryoyu kötü bir tasarım ile ele alalım. Bu kötü tasarım, Observer Design Pattern'i kullanmaz. Bir ürün stoklara eklendiğinde, mağaza tüm müşterilere bildirim gönderir. Bu, mağazanın gereksiz yere kaynak harcamasına neden olur.
+
+```csharp
+public class Customer
+{
+    public string Name { get; set; }
+
+    public Customer(string name)
+    {
+        Name = name;
+    }
+
+    public void ReceiveStockUpdate(Product product)
+    {
+        Console.WriteLine($"Dear {Name}, {product.Name} is now available at {product.Price}");
+    }
+}
+```
+
+Store sınıfı, müşterileri izler ve ürün stokları güncellendiğinde müşterilere bildirim gönderir. NotifyCustomers() metodu, tüm müşterileri dolaşır ve her biri için ReceiveStockUpdate() yöntemini çağırır.
+
+```csharp
+public class Store
+{
+    private List<Customer> _customers = new();
+    public string Name { get; set; }
+
+    public Store(string name)
+    {
+        Name = name;
+    }
+
+    public void AddCustomer(Customer customer)
+    {
+        _customers.Add(customer);
+    }
+
+    public void RemoveCustomer(Customer customer)
+    {
+        _customers.Remove(customer);
+    }
+
+    public void NotifyCustomers(Product product)
+    {
+        foreach (var customer in _customers)
+        {
+            customer.ReceiveStockUpdate(product);
+        }
+    }
+
+    public void AddProduct(Product product)
+    {
+        NotifyCustomers(product);
+    }
+}
+```
+
+```csharp
+public class Product
+{
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+```
+
+```csharp
+var store = new Store("Amazon");
+
+var product1 = new Product { Name = "iPhone 12", Price = 1000 };
+var product2 = new Product { Name = "iPhone 12 Pro", Price = 1200 };
+
+var customer1 = new Customer("John");
+var customer2 = new Customer("Mary");
+var customer3 = new Customer("Peter");
+
+store.AddCustomer(customer1);
+store.AddCustomer(customer2);
+store.AddCustomer(customer3);
+
+store.AddProduct(product1);
+store.AddProduct(product2);
+```
+
+## İyi Tasarım
 
 ```csharp
 // Mağaza ve ürünleri oluşturma
@@ -59,14 +144,89 @@ store.AddProduct(product2);
 ### IObserver Interface'i
 Customer nesnelerinin uygulaması gereken interface'dir. Bu interface, müşterilere ürün stok güncellemelerini ileten StockUpdate metodu içerir.
 
+```csharp
+public interface IObserver
+{
+    void StockUpdate(Product product);
+}
+```
+
 ### ISubject Interface'i
 Store class'ının uygulaması gereken interface'dir. Bu interface, müşterileri abone yapmak, abonelikten çıkarmak ve güncellemeleri bildirmek için metotları içerir.
+
+```csharp
+public interface ISubject
+{
+    void Subscribe(IObserver observer, Product product);
+    void Unsubscribe(IObserver observer);
+    void Notify(Product product);
+}
+```
 
 ### Store Sınıfı
 Mağazayı temsil eden sınıftır. Müşterileri ve ürünleri izler, abone yapar ve güncellemeleri bildirir.
 
+```csharp
+public class Store : ISubject
+{
+    private Dictionary<Product, List<IObserver>> _observers = new();
+    public string Name { get; set; }
+
+    public Store(string name)
+    {
+        Name = name;
+    }
+
+    public void Subscribe(IObserver observer, Product product)
+    {
+        if (!_observers.ContainsKey(product))
+        {
+            _observers[product] = new List<IObserver>();
+        }
+        _observers[product].Add(observer);
+    }
+
+    public void Unsubscribe(IObserver observer, Product product)
+    {
+        if (!_observers.ContainsKey(product)) return;
+        _observers[product].Remove(observer);
+    }
+    
+    public void Notify(Product product)
+    {
+        if (!_observers.ContainsKey(product)) return;
+        foreach (var observer in _observers[product])
+        {
+            observer.StockUpdate(product);
+        }
+    }
+
+    public void AddProduct(Product product)
+    {
+        Notify(product);
+    }
+}
+```
+
 ### Customer Sınıfı
 Müşteriyi temsil eden sınıftır. Ürün stoku güncellendiğinde StockUpdate metodu çağrılır ve müşteriye bildirim yapılır.
+
+```csharp
+public class Customer : IObserver
+{
+    public string Name { get; set; }
+
+    public Customer(string name)
+    {
+        Name = name;
+    }
+
+    public void StockUpdate(Product product)
+    {
+        Console.WriteLine($"Dear {Name}, {product.Name} is now available at {product.Price}");
+    }
+}
+```
 
 ### Product Sınıfı
 Ürünü temsil eden sınıftır. İsim ve fiyat gibi özelliklere sahiptir.

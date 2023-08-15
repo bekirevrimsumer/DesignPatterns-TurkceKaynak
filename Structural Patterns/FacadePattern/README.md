@@ -40,15 +40,8 @@ public class TransactionService
 {
     public void Withdraw(Account account, decimal amount)
     {
-        if (account.Balance >= amount)
-        {
-            account.Balance -= amount;
-            Console.WriteLine($"{account.Id}'li hesaptan ${amount} tutarında para çekildi.");
-        }
-        else
-        {
-            Console.WriteLine("Yetersiz bakiye");
-        }
+        account.Balance -= amount;
+        Console.WriteLine($"{account.Id}'li hesaptan ${amount} tutarında para çekildi.");
     }
 }
 
@@ -93,9 +86,6 @@ Bu örnekte, Facade tasarım deseni kullanılmadan alt sistemler ve işlemler do
 Şimdi, Facade deseni kullanarak bu örneği yeniden tasarlayalım.
 
 - Account sınıfı, hesap bilgilerini temsil eder.
-```csharp
-
-
 ```csharp
 public class Account
 {
