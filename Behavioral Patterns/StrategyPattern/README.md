@@ -43,6 +43,7 @@ public class Payment
 
 Strategy tasarım deseni ile her ödeme yöntemi bir strateji olarak temsil edilir ve ödeme işlemi için uygun strateji seçilir. Böylece ödeme yöntemlerinin yönetimi ve değiştirilmesi kolaylaşır.
 
+- **Strategy (IPaymentStrategy)**: Ödeme yöntemlerini temsil eden stratejilerin arayüzünü tanımlar.
 ```csharp
 public interface IPaymentStrategy
 {
@@ -50,6 +51,7 @@ public interface IPaymentStrategy
 }
 ```
 
+- **Concrete Strategy (CreditCardPayment, PayPalPayment)**: Strategy arayüzünü uygular ve ödeme yöntemlerini temsil eder.
 ```csharp
 public class CreditCardPayment : IPaymentStrategy
 {
@@ -88,6 +90,7 @@ public class PayPalPayment : IPaymentStrategy
 }
 ```
 
+- **Context (ShoppingCart)**: Strategy arayüzünü kullanarak ödeme işlemini gerçekleştirir. Ödeme yöntemini değiştirmek için `SetPaymentStrategy` metodu kullanılır.
 ```csharp
 public class ShoppingCart
 {
@@ -121,6 +124,7 @@ public class ShoppingCart
 }
 ```
 
+- Program.cs içerisinde Strategy Design Pattern Kullanımı
 ```csharp
 
 var shoppingCart = new ShoppingCart();

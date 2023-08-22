@@ -32,7 +32,7 @@ Chain of Responsibility Design Pattern, aşağıdaki durumlarda kullanışlıdı
 
 ### Kötü Tasarım
 
-Aşağıdaki kod örneğinde, isteğin geçerli olup olmadığını kontrol eden bir zincir oluşturacağız. Zincirdeki her bir nesne, isteğin geçerli olup olmadığını kontrol eden bir kuralı uygular. Zincirdeki her bir nesne, isteğin geçerli olup olmadığını kontrol eden bir kuralı uygular. Zincirdeki her bir nesne, isteğin geçerli olup olmadığını kontrol eden bir kuralı uygular.
+Aşağıdaki kod örneğinde, isteğin geçerli olup olmadığını kontrol eden bir zincir oluşturacağız. Zincirdeki her bir nesne, isteğin geçerli olup olmadığını kontrol eden bir kuralı uygular.
 
 ```csharp
 public class BadValidationExample
@@ -104,7 +104,7 @@ Görüldüğü üzere kod tekrarı mevcut ve kodun okunabilirliği düşük. Ayr
 
 ### İyi Tasarım
 
-- IRule Arayüzü: Validasyon kurallarının uygulanması için temel arayüzü tanımlar.
+- **IRule Arayüzü**: Validasyon kurallarının uygulanması için temel arayüzü tanımlar.
 
 ```csharp
 public interface IRule
@@ -114,7 +114,7 @@ public interface IRule
 }
 ```
 
-- Rule Sınıfı: IRule arayüzünün temel uygulamasını içerir ve zincirdeki bir sonraki kuralı yönlendirmek için bir NextRule özelliği bulunur.
+- **Rule Sınıfı**: IRule arayüzünün temel uygulamasını içerir ve zincirdeki bir sonraki kuralı yönlendirmek için bir NextRule özelliği bulunur.
 
 ```csharp
 public class Rule
@@ -123,7 +123,7 @@ public class Rule
 }
 ```
 
-- RequestModel Sınıfı: Adı temsil eden bir sınıf.
+- **RequestModel** Sınıfı: Request nesnesini temsil eder.
 
 ```csharp
 public class RequestModel
@@ -132,7 +132,7 @@ public class RequestModel
 }
 ```
 
-- MinLengthValidationRule: En az belirtilen uzunlukta olup olmadığını kontrol eden bir kuralları uygular. Ayrıca zincirdeki bir sonraki kuralı tanımlar.
+- **MinLengthValidationRule**: Minimum karakter sayısını kontrol eden validasyonumuzdur. Constructor içerisinde zincirdeki bir sonraki kuralı belirler.
 
 ```csharp
 public class MinLengthValidationRule : Rule, IRule
@@ -160,7 +160,7 @@ public class MinLengthValidationRule : Rule, IRule
     }
 }
 ```
-- NoDigitsValidationRule: Rakam içermemesi gerektiğini kontrol eden bir kuralı uygular. Zincirdeki bir sonraki kuralı da belirler.
+- **NoDigitsValidationRule**: Request'in rakam içermemesi gerektiğini kontrol eden validasyonumuzdur. Constructor içerisinde zincirdeki bir sonraki kuralı belirler.
 
 ```csharp
 public class NoDigitsValidationRule : Rule, IRule
@@ -187,7 +187,7 @@ public class NoDigitsValidationRule : Rule, IRule
     }
 }
 ```
-- NoUpperCaseValidationRule: Büyük harf içermemesi gerektiğini kontrol eden bir kuralı uygular. Zincirde bir sonraki kuralın olmadığını belirtir.
+- **NoUpperCaseValidationRule**: Request'in büyük harf içermemesi gerektiğini kontrol eden validasyonumuzdur. Bu validasyon son validasyondur. Constructor içerisinde zincirdeki bir sonraki kuralı belirtmemize gerek yoktur. Bu yüzden NextRule özelliğini null olarak belirtiyoruz.
 
 ```csharp
 public class NoUpperCaseValidationRule : Rule, IRule
@@ -216,7 +216,7 @@ public class NoUpperCaseValidationRule : Rule, IRule
 ```
 Burada önemli bir nokta, son validasyonun constructor'ında zincirdeki bir sonraki kuralı null olarak belirtmemizdir. Bu, zincirin sonuna geldiğimizi belirtir.
 
-Program Sınıfı: Örneği oluşturan ve zinciri çalıştıran ana programı içerir. Bir adın geçerliliğini zincir boyunca kontrol eder ve sonucu yazdırır.
+- Program.cs içerisinde Chain of Responsibility tasarım desenini kullanarak validasyon işlemlerini gerçekleştiriyoruz.
 
 ```csharp
 var requestModel = new RequestModel() { Name = "john wick" };

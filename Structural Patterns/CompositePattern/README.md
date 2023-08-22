@@ -30,7 +30,8 @@ Bir organizasyon içinde çalışanları ve yöneticileri temsil eden bir yapı 
 
 ### Kod Örneği
 
-Manager sınıfı, Subordinates isimli bir liste içerir. Bu liste, Manager sınıfının altında bulunan çalışanları temsil etmektedir.
+Manager sınıfı, Subordinates isimli bir liste içerir. Bu liste, her bir manager'ın altında çalışan employee'ları temsil eder. AddSubordinate metodu, bir çalışanı manager'ın altına eklemek için kullanılır. Employee sınıfının altında çalışan bir çalışan olamayacağı için Subordinates listesi bu sınıfta bulunmaz.
+
 ```C#
 public interface IEmployee
 {

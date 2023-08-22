@@ -111,3 +111,5 @@ bankAccountService.WithdrawMoney(5000);
 bankAccountService.DepositMoney(10000);
 bankAccountService.WithdrawMoney(5000);
 ```
+
+Örneğimizde bir banka hesabı işlemleri senaryosunu ele aldık. `IBankAccountService` interface'i, hesap işlemleri için metotları tanımladı. `BankAccountService` sınıfı gerçek hesabı temsil ederken, `BankAccountProxy` sınıfı bu hesaba erişimi kontrol etti. Proxy, gerçek nesneye erişimi kontrol ederek istemci ile gerçek nesne arasında ek bir katman oluşturur. Bu sayede, belirli koşullar sağlanmadığında erişimi engelleyebilir veya yönlendirebiliriz. Proxy, istemci ve gerçek nesne arasındaki iletişimi aracılık eder ve istemciye daha fazla esneklik ve güvenlik sağlar.

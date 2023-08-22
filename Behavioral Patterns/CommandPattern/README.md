@@ -18,7 +18,7 @@ Command tasarım deseni, davranışsal bir tasarım deseni olarak bilinir ve bir
 Kod örneğimizde Command Pattern kullanılarak bir hesap makinesi senaryosu simüle ediliyor. Her matematiksel işlem (toplama, çıkarma, çarpma, bölme) için bir komut sınıfı oluşturulmuş. Bu komut sınıfları ICommand arayüzünü uyguluyor ve Execute ve Rollback metodlarını içeriyor.
 
 #### Temel Sınıflar
-- ICommand: Komut nesnelerinin uygulaması gereken arayüzü tanımlar.
+- **ICommand**: Komut nesnelerinin uygulaması gereken arayüzü tanımlar.
 ```csharp
 public interface ICommand
 {
@@ -26,7 +26,7 @@ public interface ICommand
     void Rollback(decimal value);
 }
 ```
-- Add, Subtract, Multiply, Divide: Matematiksel işlemleri temsil eden komut sınıfları. Bu sınıflar ICommand arayüzünü uyguluyor ve Execute ve Rollback metodlarını içeriyor.
+- **Add, Subtract, Multiply, Divide**: Matematiksel işlemleri temsil eden komut sınıfları. Bu sınıflar `ICommand` arayüzünü uyguluyor ve Execute ve Rollback metodlarını içeriyor.
 ```csharp
 public class AddCommand : ICommand
 {
@@ -116,7 +116,7 @@ public class DivideCommand : ICommand
     }
 }
 ```
-- Calculator: Hesap makinesi sınıfı. Bu sınıf, komut nesnelerini kullanarak işlemleri gerçekleştiriyor ve işlem geçmişini tutuyor.
+- **Calculator**: Hesap makinesi sınıfımız. Bu sınıf, komut nesnelerini kullanarak işlemleri gerçekleştiriyor ve işlem geçmişini tutuyor.
 ```csharp
 public class Calculator
 {
@@ -140,4 +140,4 @@ public class Calculator
 ```
 
 ### Sonuç
-Command tasarım deseni, işlemleri nesnelere dönüştürerek esneklik, geri alma ve işlem geçmişi takibi gibi avantajlar sunar. Bu örnekte, hesap makinesi senaryosunu kullanarak Command Pattern'in nasıl uygulanacağını gördük. Pattern'ın detaylı kullanımı hakkında ayrıntılı bilgiler için [bu rehberi](https://refactoring.guru/design-patterns/command) inceleyebilirsiniz.
+Command tasarım deseni, işlemleri nesnelere dönüştürerek esneklik, geri alma ve işlem geçmişi takibi gibi avantajlar sunar. Bu örnekte, hesap makinesi senaryosunu kullanarak Command Pattern'in nasıl uygulanacağını gördük.

@@ -14,7 +14,7 @@ Flyweight deseni, aşağıdaki durumlar gibi birçok senaryoda kullanışlı ola
 
 ## Örnek Uygulama
 
-Uzun çalışma saatlerinden sonra biraz eğlenmek için basit bir video oyunu yapmaya karar verdiniz: oyuncular bir harita etrafında hareket edecek ve birbirlerini vuracaklar. Oyuna güzel bir particle effect eklemeyi istediniz diyelim. Çok sayıda mermi, füze ve patlamalardan çıkan şarapnel parçaları haritanın her yerinde uçuşmalı ve oyuncuya heyecan verici bir deneyim sunmalıdır.
+Basit bir video oyunu yapmaya karar verdiniz diyelim. Oyuncular bir harita etrafında hareket edecek ve birbirlerini vuracaklar. Oyuna oyuncunun hoşuna gidecek bir particle effect eklemeyi istediğinizi varsayalım. Çok sayıda mermi, füze ve patlamalardan çıkan şarapnel parçaları haritanın her yerinde uçuşmalı ve oyuncuya heyecan verici bir deneyim sunmalıdır.
 
 Şimdi, her biri kendi özelliklerine sahip olan binlerce parçacık oluşturmak istediğinizi düşünün. Bu, bellek tüketimi açısından çok pahalı olabilir. Bunun yerine, her bir parçacık türü için bir Flyweight nesnesi oluşturabilir ve bu nesneleri paylaşabilirsiniz. Bu, bellek tüketimini büyük ölçüde azaltır ve uygulamanın performansını artırır.
 
@@ -116,6 +116,4 @@ Drawing laser particle at 30, 30
 Drawing laser particle at 300, 300
 ```
 
-Bu örnekte de gördüğümüz gibi, Flyweight deseni bellek tüketimini azaltmak ve performansı artırmak için kullanılabilir. Bu desen, birçok yerde kullanılabilir ve uygulamaların performansını artırabilir.
-
-
+Bu örnekte de gördüğümüz gibi, Flyweight deseni bellek tüketimini azaltmak ve performansı artırmak için kullanılabilir. İlk seferde oluşturulan bullet ve laser particle'lar, sonraki seferlerde tekrar oluşturulmayacaktır. Bu sayede, bellek tüketimi azaltılır ve performans artırılır.

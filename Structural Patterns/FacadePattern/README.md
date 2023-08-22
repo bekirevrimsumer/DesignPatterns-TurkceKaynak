@@ -10,7 +10,9 @@ Facade deseninin kullanım senaryoları şu şekilde özetleyebiliriz:
 
 - **Sistemin Genelinde Düzgün Bir Erişim Sağlama**: Farklı modüller veya bileşenler arasındaki iletişimi düzenlemek ve merkezi bir erişim noktası oluşturmak için facade kullanılabilir.
 
-Senaryo Açıklaması:
+## Örnek Uygulama
+
+### Senaryo Açıklaması:
 
 Elimizde, bankacılık işlemlerini yapan bir uygulamanın Facade deseni kullanılarak tasarlanmış bir örneği var. Bu örnekteki kod, bir banka hesabının bakiye kontrolünü ve para çekme işlemini basit bir arabirimle gerçekleştirmek için Facade desenini kullanır.
 
