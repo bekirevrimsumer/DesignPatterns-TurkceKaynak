@@ -23,12 +23,89 @@ State tasarım deseni aşağıdaki sorunları çözmeye yardımcı olur:
 - **Bağımlılıkları Azaltma**: Durumlar arasındaki geçişler veya duruma özgü davranışlar nedeniyle oluşan sıkı bağımlılıkları azaltır. Bu, kodun daha bakımı kolay ve anlaşılır hale gelmesini sağlar.
 
 ### Örnek Uygulama
-Bu örnek, dosya indirme işlemini yönetmek için State tasarım desenini kullanmaktadır. İndirme işlemi, farklı durumlar altında farklı davranışlar sergiler. Örneğin, indirme başlatıldığında dosya indirilirken, indirme duraklatıldığında indirme durdurulur. State deseni, bu farklı durumları yönetmek ve duruma özgü davranışları kolayca tanımlamak için kullanılır.
 
-İlk olarak, IDownloadState arayüzü, indirme işleminin farklı durumlarını temsil eder ve StartDownload, PauseDownload, ResumeDownload ve CancelDownload gibi temel davranışları içerir. Ardından, her bir durumu temsil eden sınıflar olan DownloadStartedState ve DownloadPausedState oluşturulur. Bu sınıflar, ilgili duruma özgü davranışları uygular.
+Bir belge yönetim sistemi düşünün. Bu sistemde belgelerin farklı durumları olabilir. Örneğin, bir belge oluşturulduğunda durumu "Taslak" olabilir. Daha sonra belgeyi düzenlemeye başladığımızda durumu "Düzenleniyor" olabilir. Belge bir incelemeden geçtiğinde durumu "İnceleniyor" olabilir. Bu durumlar arasında geçişler yapmak gerekebilir.
 
-Ana sınıf olan DownloadManager, mevcut durumu takip eder ve StartDownload, PauseDownload, ResumeDownload ve CancelDownload gibi metotlar vasıtasıyla indirme işleminin durumuna göre davranışları yönetir. Başlangıçta DownloadPausedState durumunda başlar, bu nedenle indirme işlemi duraklatılmıştır.
+Öncelikle `IState` interface'ini oluşturalım. Bu interface, belge durumlarının uygulaması gereken davranışları tanımlar.
 
-Bu tasarım deseni, yeni durumlar eklemek veya mevcut davranışları değiştirmek gerektiğinde sadece ilgili durum sınıflarını güncellemenin yeterli olduğu genişletilebilir bir yapı sunar. Ayrıca, indirme işleminin farklı durumları arasındaki geçişlerin düzenlenmesini ve karmaşık bir durum makinesinin yönetimini sağlar.
+```C#
+public interface IState
+{
+    void Publish(Document document);
+}
+```
 
-Bu örnek, State tasarım deseninin bir işlem veya nesnenin farklı durumlarını yönetmek için nasıl kullanılabileceğini göstermektedir.
+`IState` interface'ini uygulayan `DraftState`, `ReviewState` ve `PublishedState` sınıflarını oluşturalım. Bu sınıflar, belge durumlarına özgü davranışları tanımlar.
+
+```C#
+public class DraftState : IState
+{
+    public void Publish(Document document)
+    {
+        Console.WriteLine("Document is in draft state. Cannot publish.");
+        document.ChangeState(new ReviewState());
+        document.Publish();
+    }
+}
+
+public class ReviewState : IState
+{
+    public void Publish(Document document)
+    {
+        Console.WriteLine("Document is in review state. Cannot publish.");
+        document.ChangeState(new PublishedState());
+        document.Publish();
+    }
+}
+
+public class PublishedState : IState
+{
+    public void Publish(Document document)
+    {
+        Console.WriteLine("Document is published.");
+    }
+}
+```
+
+`Document` sınıfını oluşturalım. Bu sınıf, belge durumlarını yönetir.
+
+```C#
+
+public class Document
+{
+    private IState _state;
+
+    public Document()
+    {
+        _state = new DraftState();
+    }
+
+    public void ChangeState(IState state)
+    {
+        _state = state;
+    }
+
+    public void Publish()
+    {
+        _state.Publish(this);
+    }
+}
+```
+
+`Document` sınıfını kullanarak bir belgeyi yayınlayalım.
+
+```C#
+
+var document = new Document();
+document.Publish();
+```
+
+**Çıktı**
+```
+Document is in draft state. Cannot publish.
+Document is in review state. Cannot publish.
+Document is published.
+```
+
+Örnekte görüldüğü gibi, belge durumlarına özgü davranışlar `IState` interface'ini uygulayan sınıflarda tanımlanmıştır. `Document` sınıfı, belge durumlarını yönetir ve belge durumları arasında geçişleri sağlar.
+
